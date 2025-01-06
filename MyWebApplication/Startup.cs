@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MyWebApplication.Repositories;
 using MyWebApplication.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,8 +95,13 @@ namespace MyWebApplication
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Landing}/{action=Index}/{id?}");
             });
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .CreateLogger();
 
 
         }

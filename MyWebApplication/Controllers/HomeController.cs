@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace MyWebApplication.Controllers
 {
@@ -21,11 +22,10 @@ namespace MyWebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public IActionResult Index()
+        public string Index()
         {
-            _homeService.Test();
-            return Ok();
+            Log.Error("time: " + DateTime.Now.ToString());
+            return DateTime.Now.ToString();
         }
 
         [HttpGet]
