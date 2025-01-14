@@ -86,7 +86,7 @@ pipeline {
                 script {
                     // Create a version.json file before building
                     sh """
-                        echo '{"version": "${env.NEW_TAG}"}' > src/version.json
+                        echo '{"version": "${env.NEW_TAG}"}' > version.json
                     """
                 }
             }
@@ -108,7 +108,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build --build-arg env=${DEPLOY_ENV} -f MyWebApplication/Dockerfile -t ${DOCKER_IMAGE} .'
+                    sh 'docker build --build-arg env=${DEPLOY_ENV} -f -t ${DOCKER_IMAGE} .'
                 }
             }
         }
