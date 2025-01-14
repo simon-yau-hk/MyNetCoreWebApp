@@ -17,6 +17,7 @@ pipeline {
             }
         }
 
+
         stage('Create New Tag') {
             steps {
                 script {
@@ -83,11 +84,13 @@ pipeline {
 
         stage('Create Version File') {
             steps {
-                script {
-                    // Create a version.json file before building
-                    sh """
-                        echo '{"version": "${env.NEW_TAG}"}' > version.json
-                    """
+                dir('MyWebApplication') {
+                    script {
+                        // Create a version.json file before building
+                        sh """
+                            echo '{"version": "${env.NEW_TAG}"}' > version.json
+                        """
+                    }
                 }
             }
         }
@@ -106,21 +109,25 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build the Docker image
-                    sh 'docker build --build-arg env=${DEPLOY_ENV} -t ${DOCKER_IMAGE} .'
+                dir('MyWebApplication') {
+                    script {
+                        // Build the Docker image
+                        sh 'docker build --build-arg env=${DEPLOY_ENV} -t ${DOCKER_IMAGE} .'
+                    }
                 }
             }
         }
 
         stage('Tag Docker Image') {
             steps {
+              
                 script {
                     // Tag with Git version
                     sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${env.NEW_TAG}"
                     // Tag the Docker image
                     sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USERNAME}/${DOCKER_IMAGE}"
                 }
+                
             }
         }
 
