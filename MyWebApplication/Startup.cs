@@ -81,7 +81,7 @@ namespace MyWebApplication
 
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             DefaultFilesOptions defoptions = new DefaultFilesOptions();
             defoptions.DefaultFileNames.Add("index.html");
@@ -93,9 +93,12 @@ namespace MyWebApplication
 
             app.UseEndpoints(endpoints =>
             {
+              
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Landing}/{action=Index}/{id?}");
+
+             
             });
 
             Log.Logger = new LoggerConfiguration()

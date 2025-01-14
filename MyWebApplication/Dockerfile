@@ -6,6 +6,8 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG env
+ENV ASPNETCORE_ENVIRONMENT=${env}
 WORKDIR /src
 COPY ["MyWebApplication.csproj", "."]
 RUN dotnet restore "./MyWebApplication.csproj"
