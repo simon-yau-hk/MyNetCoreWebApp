@@ -88,7 +88,7 @@ pipeline {
                     script {
                         // Create a version.json file before building
                         sh """
-                            echo '{"version": "${env.NEW_TAG}"}' > version.json
+                            echo '{"Version": "${env.NEW_TAG}"}' > version.json
                         """
                     }
                 }
