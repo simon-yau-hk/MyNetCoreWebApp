@@ -34,6 +34,11 @@ namespace MyWebApplication
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<IMeetUpService, MeetUpService>();
             services.AddScoped<IHomeRepository, HomeRepository>();
+            services.AddScoped<TestService>();
+            services.AddScoped<TestAnotherService>();
+            services.AddScoped<ITestService, TestService>();
+            services.AddScoped<ITestDummyService, TestDummyService>();
+            services.AddScoped<ITestDummyAnotherService, TestDummyAnotherService>();
 
 
 

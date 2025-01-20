@@ -15,7 +15,7 @@ namespace MyWebApplication.Controllers
 {
     //not working now...
     [ApiController]
-    [Route("Landing")]
+    [Route("api/Landing")]
     public class LandingController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -34,7 +34,7 @@ namespace MyWebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("/Version")]
+        [Route("Version")]
         public string Version()
         {
             string path = Path.Combine(AppContext.BaseDirectory, "version.json");
