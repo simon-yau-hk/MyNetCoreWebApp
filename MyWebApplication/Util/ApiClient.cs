@@ -20,7 +20,7 @@ namespace MyWebApplication.Util
         {
             _httpClient = new HttpClient();
             _configuration = configuration;
-            _baseUrl = configuration["InternalBaseUrl"]; ;
+            _baseUrl = Environment.GetEnvironmentVariable("InternalBaseUrl");
         }
 
         public async Task<string> GetAsyncString(string endpoint)
