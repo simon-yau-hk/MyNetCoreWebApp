@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MyWebApplication.Repositories;
 using MyWebApplication.Services;
+using MyWebApplication.Util;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace MyWebApplication
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<TestService>();
             services.AddScoped<TestAnotherService>();
+            services.AddScoped<ApiClient>();
             services.AddScoped<ITestService, TestService>();
             services.AddScoped<ITestDummyService, TestDummyService>();
             services.AddScoped<ITestDummyAnotherService, TestDummyAnotherService>();

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using MyWebApplication.Model;
+using MyWebApplication.Util;
 
 namespace MyWebApplication.Controllers
 {
@@ -20,8 +21,10 @@ namespace MyWebApplication.Controllers
         private readonly ITestService _testChosnService;
         private readonly TestService _testServiceImp;
         private readonly TestAnotherService _testAnotherServiceImp;
+        private readonly ApiClient _apiClient;
         public TestController(ITestService testService, TestService testServiceImp, 
-            TestAnotherService testAnotherServiceImp, ITestDummyService testDummyService, ITestDummyAnotherService testDummyAnotherService)
+            TestAnotherService testAnotherServiceImp, ITestDummyService testDummyService, ITestDummyAnotherService testDummyAnotherService,
+            ApiClient apiClient)
         {
             this._testService = testService;
             this._testServiceImp = testServiceImp;
@@ -29,6 +32,7 @@ namespace MyWebApplication.Controllers
             this._testDummyService = testDummyService;
             this._testDummyAnotherService = testDummyAnotherService;
             this._testChosnService = testDummyAnotherService;
+            this._apiClient = apiClient;
         }
 
         [HttpGet]
@@ -44,9 +48,17 @@ namespace MyWebApplication.Controllers
             return _testService.get();
         }
 
-       
+        [HttpGet]
+        [Route("testInternalCall")]
+        public async Task<string> testInternalCall()
+        {
+            var ret = await _apiClient.GetAsyncString("api/Landing/Version");
+            return ret;
+        }
 
-     
+
+
+
 
 
     }
