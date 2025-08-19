@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyWebApplication.Model;
 using MyWebApplication.Repositories;
@@ -16,7 +18,9 @@ namespace MyWebApplication.Services
     {
          void Test();
 
-        string Login(string userName, string password);
+        string Login(string userName, string password, bool isSkipChecking = false);
+
+        Task<string> GoogleLogin(string accessToken);
         AuthResultModel VerifyAndGenerateToken(TokenRequestModel tokenRequest);
     }
     public class HomeService: IHomeService
@@ -35,9 +39,9 @@ namespace MyWebApplication.Services
             var i = _homeRepository.Get();
         }
 
-        public string Login(string userName, string password)
+        public string Login(string userName, string password, bool isSkipChecking = false)
         {
-            if (userName == "aaa" && password == "111")
+            if (userName == "aaa" && password == "111" || isSkipChecking)
             {
                 var issuer = _configuration["Jwt:Issuer"];
                 var audience = _configuration["Jwt:Audience"];
@@ -72,6 +76,36 @@ namespace MyWebApplication.Services
             }
         }
 
+        public async Task<string> GoogleLogin(string accessToken)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new[] { "620540389061-idd7tqs4rrf4livtrpe81fo1ebqvin9a.apps.googleusercontent.com" }
+            };
+            var payload = await GoogleJsonWebSignature.ValidateAsync(accessToken, settings);
+            if (payload == null)
+            {
+                return "Invalid Google token";
+            }
+
+            // Extract user info from Google's JWT
+            var googleUser = new GoogleUserInfo
+            {
+                GoogleId = payload.Subject,
+                Email = payload.Email,
+                Name = payload.Name,
+                Picture = payload.Picture,
+                GivenName = payload.GivenName,
+                FamilyName = payload.FamilyName
+            };
+
+       
+
+            var appToken = this.Login(googleUser.Name,"123",true);
+
+            return appToken;
+
+        }
         public AuthResultModel VerifyAndGenerateToken(TokenRequestModel tokenRequest)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();

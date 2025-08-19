@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using MyWebApplication.Model;
 
 namespace MyWebApplication.Controllers
 {
@@ -37,7 +38,16 @@ namespace MyWebApplication.Controllers
             return _homeService.Login(userName, password);
         }
 
-     
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("googleLogin")]
+        public async Task<string> GoogleLogin(GoogleLoginRequest request)
+        {
+            return await _homeService.GoogleLogin(request.AccessToken);
+
+        }
+
+
 
 
     }
